@@ -5,10 +5,10 @@ from src.meteo import get_airconditions, get_archive_meteo, get_fve_data_utc_day
 from typing import Tuple, Optional
 import numpy as np
 import pvlib
-import os
+import streamlit as st
 
-USERNAME = os.environ.get("USERNAME")
-PASSWORD = os.environ.get("PASSWORD")
+USERNAME = st.secrets["USERNAME"]
+PASSWORD = st.secrets["PASSWORD"]
 
 LATITUDE=49.13114
 LONGITUDE=15.18067
