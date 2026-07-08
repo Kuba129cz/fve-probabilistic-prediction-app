@@ -43,6 +43,13 @@ def get_meteo_dataset(predicted_day: date) -> Tuple[pd.DataFrame, pd.DataFrame, 
     past_dataset = add_wind_vectors(past_dataset)
     past_dataset = add_solar_position(past_dataset, LATITUDE, LONGITUDE)
     
+    st.write("Debug - future_meteo je None:", future_meteo is None)
+    st.write("Debug - air_conditions_predicted_day je None:", air_conditions_predicted_day is None)
+
+    if future_meteo is None or air_conditions_predicted_day is None:
+        st.error("Chyba: Data z API nebyla načtena (vrátila None). Zkontroluj přihlašovací údaje.")
+        return past_dataset, None, fve_target
+    
     future_meteo = future_meteo.merge(air_conditions_predicted_day, on="time", how="inner")
 
     if future_meteo is not None and not future_meteo.empty:
