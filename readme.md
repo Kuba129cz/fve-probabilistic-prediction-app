@@ -1,19 +1,9 @@
----
-title: Fve Probabilistic Prediction
-emoji: 📊
-colorFrom: gray
-colorTo: red
-sdk: streamlit
-sdk_version: 1.39.0
-python_version: 3.11
-app_file: app.py
-pinned: false
-short_description: Solar energy production forecasting app.
----
 ```markdown
 # ☀️ PV Probabilistic Prediction App
 
 An interactive Streamlit web application designed for **probabilistic forecasting of photovoltaic (PV) power production**. The app utilizes a Deep Learning model with an attention mechanism and leverages a **5-model ensemble** to deliver robust quantile predictions (10%, 30%, 50%, 70%, 90% confidence bands) along with historical data and weather forecast integration.
+
+🚀 **Live Demo:** [Run the application here](https://jha-fve-probabilistic-prediction-app.streamlit.app/)
 
 ## 📊 Features
 
