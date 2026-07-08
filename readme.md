@@ -1,3 +1,15 @@
+---
+title: Fve Probabilistic Prediction
+emoji: 📊
+colorFrom: gray
+colorTo: red
+sdk: streamlit
+sdk_version: 1.39.0
+python_version: 3.11
+app_file: app.py
+pinned: false
+short_description: Solar energy production forecasting app.
+---
 ```markdown
 # ☀️ PV Probabilistic Prediction App
 
