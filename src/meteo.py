@@ -28,7 +28,7 @@ def get_archive_meteo(start_date: date, end_date: date, lat: int =49.13114, lon:
     
     return dataset
 
-def get_archive_airconditions(start_date, end_date, lat=49.13114, lon=15.18067) -> pd.DataFrame:
+def get_airconditions(start_date, end_date, lat=49.13114, lon=15.18067) -> pd.DataFrame:
     url = "https://air-quality-api.open-meteo.com/v1/air-quality"
     params = {
         "latitude": lat,
@@ -128,8 +128,10 @@ def get_fve_data_utc_day(day: date, username: str, password: str) -> pd.DataFram
     next_day = day + timedelta(days=1)
     df_next = get_fve_data_for_day(next_day, username, password)
     combined_df = pd.concat([df_curr, df_next], ignore_index=True)
+
     start_utc = pd.Timestamp(f"{day} 00:00:00").tz_localize("UTC")
     end_utc = pd.Timestamp(f"{day} 23:59:59").tz_localize("UTC")
+
     utc_day_df = combined_df[(combined_df["time"] >= start_utc) & (combined_df["time"] <= end_utc)]
 
     return utc_day_df.sort_values("time").reset_index(drop=True)

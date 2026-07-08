@@ -67,7 +67,21 @@ class Preprocessor:
         joblib.dump(self.target_scaler, f"{save_dir}/target_scaler.pkl")
         joblib.dump(self.cols_to_scale, f"{save_dir}/scaled_features_list.pkl")
 
-    def load_scalers(self, load_dir: str = "checkpoints/scalers"):
+    def load_scalers(self, load_dir: str):
         self.feature_scaler = joblib.load(f"{load_dir}/feature_scaler.pkl")
         self.target_scaler = joblib.load(f"{load_dir}/target_scaler.pkl")
         self.cols_to_scale = joblib.load(f"{load_dir}/scaled_features_list.pkl")
+    
+    @classmethod
+    def from_saved(cls, load_dir: str):
+        feature_scaler = joblib.load(f"{load_dir}/feature_scaler.pkl")
+        target_scaler = joblib.load(f"{load_dir}/target_scaler.pkl")
+        cols_to_scale = joblib.load(f"{load_dir}/scaled_features_list.pkl")
+        
+        instance = cls(feature_cols=[], target_col="")
+        
+        instance.feature_scaler = feature_scaler
+        instance.target_scaler = target_scaler
+        instance.cols_to_scale = cols_to_scale
+        
+        return instance
