@@ -74,7 +74,7 @@ def render_forecast_dashboard(predictions, time_axis, selected_date, actual_ener
     )
 
     # Display the chart in Streamlit
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width='stretch')
 
     # If reality exists, insert it at the beginning of the metrics table below the chart
     if actual_energy is not None:
@@ -82,7 +82,7 @@ def render_forecast_dashboard(predictions, time_axis, selected_date, actual_ener
 
     # Display data table below the chart
     with st.expander("👁️ View predicted data in a table"):
-        st.dataframe(df_preds, use_container_width=True)
+        st.dataframe(df_preds, use_container_width='stretch')
 
 
 def main():
@@ -109,7 +109,7 @@ def main():
         # --- INPUT DATA DISPLAY ---
         st.subheader(f"⏳ Historical data (Weather + PV production for {selected_date - timedelta(days=1)})")
         if df_past is not None and not df_past.empty:
-            st.dataframe(df_past, use_container_width=True)
+            st.dataframe(df_past, use_container_width='stretch')
         else:
             st.warning("Historical data is not available.")
 
@@ -117,7 +117,7 @@ def main():
 
         st.subheader(f"🔮 Future data (Weather forecast for {selected_date})")
         if df_future is not None and not df_future.empty:
-            st.dataframe(df_future, use_container_width=True)
+            st.dataframe(df_future, use_container_width='stretch')
         else:
             st.warning("Weather forecast is not available.")
         
