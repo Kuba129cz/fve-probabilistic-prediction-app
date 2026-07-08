@@ -6,7 +6,7 @@ from src import data_processing
 from src.predict import predict
 
 st.set_page_config(page_title="PV Prediction - Data", layout="wide")
-st.title("☀️ PV Probabilistic Prediction App")
+st.title("PV Probabilistic Prediction App")
 
 
 def render_forecast_dashboard(predictions, time_axis, selected_date, actual_energy=None):
@@ -15,7 +15,7 @@ def render_forecast_dashboard(predictions, time_axis, selected_date, actual_ener
     If actual_energy list is provided, it adds it to the chart as a dashed line representing reality.
     """
     st.markdown("---")
-    st.subheader("📊 Interactive PV Production Prediction Chart")
+    st.subheader("Interactive PV Production Prediction Chart")
 
     quantile_names = ['10% Quantile', '30% Quantile', 'Median (50%)', '70% Quantile', '90% Quantile']
     df_preds = pd.DataFrame(predictions, columns=quantile_names, index=time_axis)
@@ -73,14 +73,11 @@ def render_forecast_dashboard(predictions, time_axis, selected_date, actual_ener
         template="plotly_white"
     )
 
-    # Display the chart in Streamlit
     st.plotly_chart(fig, use_container_width='stretch')
 
-    # If reality exists, insert it at the beginning of the metrics table below the chart
     if actual_energy is not None:
         df_preds.insert(0, 'Actual (Reality)', actual_energy)
 
-    # Display data table below the chart
     with st.expander("👁️ View predicted data in a table"):
         st.dataframe(df_preds, use_container_width='stretch')
 
@@ -103,11 +100,9 @@ def main():
             st.error("Error: Could not load data for this date.")
             return
             
-        # Unpacking 3 values: past data, future data, and a clean list containing actual energy (or None)
         df_past, df_future, actual_energy = result
 
-        # --- INPUT DATA DISPLAY ---
-        st.subheader(f"⏳ Historical data (Weather + PV production for {selected_date - timedelta(days=1)})")
+        st.subheader(f"Historical data (Weather + PV production for {selected_date - timedelta(days=1)})")
         if df_past is not None and not df_past.empty:
             st.dataframe(df_past, use_container_width='stretch')
         else:
@@ -115,23 +110,20 @@ def main():
 
         st.markdown("---")
 
-        st.subheader(f"🔮 Future data (Weather forecast for {selected_date})")
+        st.subheader(f"Future data (Weather forecast for {selected_date})")
         if df_future is not None and not df_future.empty:
             st.dataframe(df_future, use_container_width='stretch')
         else:
             st.warning("Weather forecast is not available.")
         
-        # --- CRITICAL: BACKUP TIME AXIS BEFORE PREDICTION ---
         if df_future is not None and 'time' in df_future.columns:
             time_axis = pd.to_datetime(df_future['time']).dt.strftime('%H:%M').tolist()
         else:
             time_axis = [f"{p:02d}:00" for p in range(24)]
 
-        # --- MODEL PREDICTION GENERATION ---
-        with st.spinner("🔮 Generating probabilistic forecast..."):
+        with st.spinner("Generating probabilistic forecast..."):
             predictions = predict(x_past=df_past, x_future=df_future)
         
-        # --- RENDER DASHBOARD AND GRAPH ---
         render_forecast_dashboard(
             predictions=predictions, 
             time_axis=time_axis, 
